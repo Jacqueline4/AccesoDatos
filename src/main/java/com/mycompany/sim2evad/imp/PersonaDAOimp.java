@@ -6,6 +6,7 @@ package com.mycompany.sim2evad.imp;
 
 import com.mycompany.sim2evad.DAO.PersonaDAO;
 import com.mycompany.sim2evad.HibernateUtil;
+import com.mycompany.sim2evad.model.Comentario;
 import com.mycompany.sim2evad.model.Libro;
 import com.mycompany.sim2evad.model.Persona;
 import jakarta.persistence.criteria.CriteriaBuilder;
@@ -72,7 +73,7 @@ public class PersonaDAOimp implements PersonaDAO {
 
     @Override
     public void create(Persona p) {
-         Transaction tx = null;
+        Transaction tx = null;
         try (Session session = HibernateUtil.getFactory().openSession()) {
             tx = session.beginTransaction();
             session.persist(p);
@@ -106,19 +107,19 @@ public class PersonaDAOimp implements PersonaDAO {
             CriteriaQuery<Libro> query = cb.createQuery(Libro.class);
             Root<Libro> libroTable = query.from(Libro.class);
             Join<Libro, Persona> personaTable = libroTable.join("readersList");
-            query.where(cb.equal(personaTable, p));      
+            query.where(cb.equal(personaTable, p));
             return session.createQuery(query).getResultList();
         }
     }
 
     @Override
     public List<Libro> getLibrosEscritos(Persona p) {
-      try (Session session = HibernateUtil.getFactory().openSession()) {
+        try (Session session = HibernateUtil.getFactory().openSession()) {
             CriteriaBuilder cb = session.getCriteriaBuilder();
             CriteriaQuery<Libro> query = cb.createQuery(Libro.class);
             Root<Libro> libroTable = query.from(Libro.class);
             Join<Libro, Persona> personaTable = libroTable.join("writersList");
-            query.where(cb.equal(personaTable, p));      
+            query.where(cb.equal(personaTable, p));
             return session.createQuery(query).getResultList();
         }
     }
@@ -134,5 +135,17 @@ public class PersonaDAOimp implements PersonaDAO {
             return session.createQuery(query).getResultList();
         }
     }
-    
+//    @Override
+//    public List<Libro> getLibrosComentados(Persona p) {
+//        try (Session session = HibernateUtil.getFactory().openSession()) {
+//            CriteriaBuilder cb = session.getCriteriaBuilder();
+//            CriteriaQuery<Libro> query = cb.createQuery(Libro.class);
+//            Root<Libro> libroTable = query.from(Libro.class);
+//            Join<Libro, Comentario> comentarioTable = libroTable.join("commentsList");
+//            Join<Comentario, Persona> personaTable = comentarioTable.join("usuario");
+//            query.where(cb.equal(personaTable, p));
+//            return session.createQuery(query).getResultList();
+//        }
+//    }
+
 }

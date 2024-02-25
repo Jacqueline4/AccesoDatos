@@ -10,6 +10,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,24 +22,29 @@ import java.util.List;
 @Entity
 @Table(name = "libros")
 public class Libro {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "titulo")
     private String title;
-    
+
     @Column(name = "numero_paginas")
     private int paginas;
+ 
 
     @ManyToMany(mappedBy = "writeList")
     private List<Persona> writersList = new ArrayList<>();
-    
+
     @ManyToMany(mappedBy = "readList")
     private List<Persona> readersList = new ArrayList<>();
-    
+
     @ManyToMany(mappedBy = "commentList")
     private List<Persona> commentsList = new ArrayList<>();
+    
+//    @OneToMany(mappedBy = "libro")
+//    private List<Comentario> commentsList = new ArrayList<>();
 
     public Libro() {
     }
@@ -88,6 +94,28 @@ public class Libro {
         this.readersList = readersList;
     }
 
+
+    @Override
+    public String toString() {
+        return "Libro -> " + "id=" + id + ", title=" + title + ", paginas=" + paginas;
+    }
+
+//    public List<Comentario> getCommentsList() {
+//        return commentsList;
+//    }
+//
+//    public void setCommentsList(List<Comentario> commentsList) {
+//        this.commentsList = commentsList;
+//    }
+
+//    public Comentario getComentario() {
+//        return comentario;
+//    }
+//
+//    public void setComentario(Comentario comentario) {
+//        this.comentario = comentario;
+//    }
+
     public List<Persona> getCommentsList() {
         return commentsList;
     }
@@ -96,11 +124,4 @@ public class Libro {
         this.commentsList = commentsList;
     }
 
-    @Override
-    public String toString() {
-        return "Libro: \n" + "id=" + id + ", title=" + title + ", paginas=" + paginas + ", writersList=" + writersList + 
-                ", readersList=" + readersList + ", commentsList=" + commentsList;
-    }
-    
-    
 }

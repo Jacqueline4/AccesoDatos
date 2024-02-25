@@ -13,6 +13,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
@@ -51,7 +52,7 @@ public class Persona {
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
-            name = "leido",
+            name = "leidos",
             joinColumns = @JoinColumn(name = "usuario"),
             inverseJoinColumns = @JoinColumn(name = "libro")
     )
@@ -64,6 +65,9 @@ public class Persona {
             inverseJoinColumns = @JoinColumn(name = "libro")
     )
     private List<Libro> commentList = new ArrayList<>();
+//    
+//    @OneToMany(mappedBy = "usuario")
+//    private List<Comentario> commentList = new ArrayList<>();
 
     public Persona() {
     }
@@ -115,13 +119,6 @@ public class Persona {
         this.readList = readList;
     }
 
-    public List<Libro> getCommentList() {
-        return commentList;
-    }
-
-    public void setCommentList(List<Libro> commentList) {
-        this.commentList = commentList;
-    }
 
     public String getMail() {
         return mail;
@@ -141,8 +138,23 @@ public class Persona {
 
     @Override
     public String toString() {
-        return "Persona{: \n" + "id=" + id + ", name=" + name + ", user=" + user + ", mail=" + mail +
-                ", password=" + password + ", writeList=" + writeList + ", readList=" + readList + ", commentList=" + commentList;
+        return "Persona -> " + "id=" + id + ", name=" + name + ", user=" + user + ", mail=" + mail;
+    }
+
+//    public List<Comentario> getCommentList() {
+//        return commentList;
+//    }
+//
+//    public void setCommentList(List<Comentario> commentList) {
+//        this.commentList = commentList;
+//    }
+
+    public List<Libro> getCommentList() {
+        return commentList;
+    }
+
+    public void setCommentList(List<Libro> commentList) {
+        this.commentList = commentList;
     }
 
 }

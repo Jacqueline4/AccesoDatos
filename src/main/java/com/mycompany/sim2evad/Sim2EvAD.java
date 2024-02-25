@@ -4,6 +4,7 @@
 package com.mycompany.sim2evad;
 
 import com.mycompany.sim2evad.imp.LibroDAOimp;
+import com.mycompany.sim2evad.model.Comentario;
 import com.mycompany.sim2evad.model.Libro;
 import com.mycompany.sim2evad.model.Persona;
 import com.mycompany.sim2evad.services.PersonaServices;
@@ -30,32 +31,49 @@ public class Sim2EvAD {
         Libro l1 = new Libro("libro1", 10);
         Libro l2 = new Libro("libro2", 10);
         Libro l3 = new Libro("libro3", 10);
-
+        ldao.createLibro(l1);
+        ldao.createLibro(l2);
         ldao.createLibro(l3);
-
-        ps.addLibroEscrito(p3, l1);
-        ps.addLibroEscrito(p3, l2);
-
-        ps.addLibroLeido(p2, l1);
-
-        ps.addLibroComentado(p2, l1);
-        ps.addLibroComentado(p2, l3);
+        
         ps.addLibroLeido(p1, l1);
+        ps.addLibroLeido(p1, l2);
+        ps.addLibroLeido(p1, l3);
+        ps.addLibroLeido(p2, l1);
+        ps.addLibroLeido(p2, l2);
+        ps.addLibroLeido(p2, l3);
+        ps.addLibroLeido(p3, l1);
+        ps.addLibroLeido(p3, l2);
+        ps.addLibroLeido(p3, l3);
 
+//        ldao.createLibro(l3);
+//
+//        ps.addLibroEscrito(p3, l1);
+//        ps.addLibroEscrito(p3, l2);
+//
+//        ps.addLibroLeido(p2, l1);
+//
+//        ps.addLibroComentado(p2, l1);
+////        ps.addLibroComentado(p2, l1, new Comentario(1, "comentario1"));
+////        Comentario c = new Comentario(1, "comentario1");
+////        l1.setComentario(c);
+////        ps.addLibroComentado(p4, l3, c);
+////        ps.addLibroComentado(p2, l3, new Comentario(2, "comentario2"));
+//        ps.addLibroLeido(p1, l1);
         if (ps.login(p1)) {
             System.out.println("Bienvenido");
-            /*System.out.println("Libros leidos: ");
-           
-            for (Libro libro :p1.getReadList() ) {
+            System.out.println("Libros leidos: ");
+
+            for (Libro libro : p1.getReadList()) {
                 System.out.println(libro);
             }
             System.out.println("listado de libros: ");
             for (Libro libro : ldao.getLibros()) {
                 System.out.println(libro);
-            }*/
+            }
         } else {
             System.out.println("Usuario y/o contraseña invalido");
         }
+
     }
 
 }

@@ -5,6 +5,7 @@
 package com.mycompany.sim2evad.services;
 
 import com.mycompany.sim2evad.imp.PersonaDAOimp;
+import com.mycompany.sim2evad.model.Comentario;
 import com.mycompany.sim2evad.model.Libro;
 import com.mycompany.sim2evad.model.Persona;
 import java.util.ArrayList;
@@ -49,12 +50,22 @@ public class PersonaServices {
         l.getWritersList().add(p);
         pdao.update(p);
     }
-
-    public void addLibroComentado(Persona p, Libro l) {
+     public void addLibroComentado(Persona p, Libro l) {
+       
         p.getCommentList().add(l);
         l.getCommentsList().add(p);
+      
         pdao.update(p);
     }
+
+//    public void addLibroComentado(Persona p, Libro l, Comentario c) {
+//        c.setUsuario(p);
+//        c.setLibro(l);
+//        p.getCommentList().add(c);
+//        l.getCommentsList().add(c);
+//      
+//        pdao.update(p);
+//    }
 
     public void remove(Persona p) {
         pdao.remove(p);
