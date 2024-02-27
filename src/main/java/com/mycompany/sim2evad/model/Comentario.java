@@ -11,40 +11,35 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Table;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.UniqueConstraint;
-import java.util.ArrayList;
-import java.util.List;
+import org.hibernate.annotations.Check;
 
 /**
  *
  * @author jacqueline
  */
 @Entity
-@Table(name = "comentados", uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"usuario_id", "libro_id","valoracion", "comentario"})
-})
+@Table(name = "comentarios")
 public class Comentario {
-     @Id
+
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "usuario_id")
-    private Persona usuario;
-
-     @ManyToMany(mappedBy = "writeList")
-    private List<Persona> List = new ArrayList<>();
-//    @ManyToOne
-//    @JoinColumn(name = "libro_id")
-//    private Libro libro;
-
     @Column(name = "valoracion")
+    @Check(constraints = "valoracion >= 1 AND valoracion <= 5")
     private int valoracion;
 
     @Column(name = "comentario")
     private String comentario;
+
+    @ManyToOne()//cascade = {CascadeType.PERSIST, CascadeType.MERGE}
+    @JoinColumn(name = "persona_id")
+    private Persona persona;
+
+    @ManyToOne()
+    @JoinColumn(name = "libro_id")
+    private Libro libro;
 
     public Comentario() {
     }
@@ -52,6 +47,13 @@ public class Comentario {
     public Comentario(int valoracion, String comentario) {
         this.valoracion = valoracion;
         this.comentario = comentario;
+    }
+
+    public Comentario(int valoracion, String comentario, Persona persona, Libro libro) {
+        this.valoracion = valoracion;
+        this.comentario = comentario;
+        this.persona = persona;
+        this.libro = libro;
     }
 
     public Long getId() {
@@ -62,21 +64,13 @@ public class Comentario {
         this.id = id;
     }
 
-    public Persona getUsuario() {
-        return usuario;
+    public Libro getLibro() {
+        return libro;
     }
 
-    public void setUsuario(Persona usuario) {
-        this.usuario = usuario;
+    public void setLibro(Libro libro) {
+        this.libro = libro;
     }
-//
-//    public Libro getLibro() {
-//        return libro;
-//    }
-//
-//    public void setLibro(Libro libro) {
-//        this.libro = libro;
-//    }
 
     public int getValoracion() {
         return valoracion;
@@ -93,5 +87,13 @@ public class Comentario {
     public void setComentario(String comentario) {
         this.comentario = comentario;
     }
-    
+
+    public Persona getPersona() {
+        return persona;
+    }
+
+    public void setPersona(Persona persona) {
+        this.persona = persona;
+    }
+
 }

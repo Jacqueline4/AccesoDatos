@@ -20,6 +20,9 @@
 
         <mapping class="com.mycompany.sim2evad.model.Persona"/>  
         <mapping class="com.mycompany.sim2evad.model.Libro"/>
+        <mapping class="com.mycompany.sim2evad.model.Comentario"/>
+        <mapping class="com.mycompany.sim2evad.model.Escribir"/>
+        <mapping class="com.mycompany.sim2evad.model.Leer"/>
        
         
     </session-factory>

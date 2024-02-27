@@ -4,6 +4,9 @@
  */
 package com.mycompany.sim2evad.DAO;
 
+import com.mycompany.sim2evad.model.Comentario;
+import com.mycompany.sim2evad.model.Escribir;
+import com.mycompany.sim2evad.model.Leer;
 import com.mycompany.sim2evad.model.Libro;
 import com.mycompany.sim2evad.model.Persona;
 import java.util.List;
@@ -22,11 +25,11 @@ public interface PersonaDAO {
 
     public void create(Persona p);
 
-    public Persona getByUser(Persona p);
+    public Persona getByPersona(Persona p);
 
-    public List<Libro> getLibrosLeidos(Persona p);
+    public List<Libro> getLibrosLeidos(Persona p, Leer l);
 
-    public List<Libro> getLibrosEscritos(Persona p);
+    public List<Libro> getLibrosEscritos(Persona p, Escribir e);
 
-    public List<Libro> getLibrosComentados(Persona p);
+    public List<Libro> getLibrosComentados(Persona p, Comentario c);
 }

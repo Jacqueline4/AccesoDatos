@@ -7,14 +7,13 @@ package com.mycompany.sim2evad.model;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,32 +41,17 @@ public class Persona {
     @Column(name = "contraseña")
     private String password;
 
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinTable(
-            name = "escritos",
-            joinColumns = @JoinColumn(name = "usuario"),
-            inverseJoinColumns = @JoinColumn(name = "libro")
-    )
-    private List<Libro> writeList = new ArrayList<>();
+    @Column(name = "last_time_login")
+    private LocalDateTime lastTimeLogin;
 
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinTable(
-            name = "leidos",
-            joinColumns = @JoinColumn(name = "usuario"),
-            inverseJoinColumns = @JoinColumn(name = "libro")
-    )
-    private List<Libro> readList = new ArrayList<>();
+    @OneToMany(mappedBy = "persona", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<Escribir> writeList = new ArrayList<>();
 
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinTable(
-            name = "comentados",
-            joinColumns = @JoinColumn(name = "usuario"),
-            inverseJoinColumns = @JoinColumn(name = "libro")
-    )
-    private List<Libro> commentList = new ArrayList<>();
-//    
-//    @OneToMany(mappedBy = "usuario")
-//    private List<Comentario> commentList = new ArrayList<>();
+    @OneToMany(mappedBy = "persona", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<Leer> readList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "persona", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<Comentario> commentList = new ArrayList<>();
 
     public Persona() {
     }
@@ -77,6 +61,7 @@ public class Persona {
         this.user = user;
         this.mail = mail;
         this.password = password;
+        this.lastTimeLogin =LocalDateTime.now();
     }
 
     public Long getId() {
@@ -103,23 +88,6 @@ public class Persona {
         this.user = user;
     }
 
-    public List<Libro> getWriteList() {
-        return writeList;
-    }
-
-    public void setWriteList(List<Libro> writeList) {
-        this.writeList = writeList;
-    }
-
-    public List<Libro> getReadList() {
-        return readList;
-    }
-
-    public void setReadList(List<Libro> readList) {
-        this.readList = readList;
-    }
-
-
     public String getMail() {
         return mail;
     }
@@ -141,20 +109,28 @@ public class Persona {
         return "Persona -> " + "id=" + id + ", name=" + name + ", user=" + user + ", mail=" + mail;
     }
 
-//    public List<Comentario> getCommentList() {
-//        return commentList;
-//    }
-//
-//    public void setCommentList(List<Comentario> commentList) {
-//        this.commentList = commentList;
-//    }
-
-    public List<Libro> getCommentList() {
+    public List<Comentario> getCommentList() {
         return commentList;
     }
 
-    public void setCommentList(List<Libro> commentList) {
+    public void setCommentList(List<Comentario> commentList) {
         this.commentList = commentList;
+    }
+
+    public List<Escribir> getWriteList() {
+        return writeList;
+    }
+
+    public void setWriteList(List<Escribir> writeList) {
+        this.writeList = writeList;
+    }
+
+    public List<Leer> getReadList() {
+        return readList;
+    }
+
+    public void setReadList(List<Leer> readList) {
+        this.readList = readList;
     }
 
 }

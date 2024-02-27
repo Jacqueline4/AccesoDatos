@@ -4,8 +4,10 @@
  */
 package com.mycompany.sim2evad.model;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -32,19 +34,15 @@ public class Libro {
 
     @Column(name = "numero_paginas")
     private int paginas;
- 
 
-    @ManyToMany(mappedBy = "writeList")
-    private List<Persona> writersList = new ArrayList<>();
+    @OneToMany(mappedBy = "libro", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private List<Escribir> writersList = new ArrayList<>();
 
-    @ManyToMany(mappedBy = "readList")
-    private List<Persona> readersList = new ArrayList<>();
+    @OneToMany(mappedBy = "libro", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private List<Leer> readersList = new ArrayList<>();
 
-    @ManyToMany(mappedBy = "commentList")
-    private List<Persona> commentsList = new ArrayList<>();
-    
-//    @OneToMany(mappedBy = "libro")
-//    private List<Comentario> commentsList = new ArrayList<>();
+    @OneToMany(mappedBy = "libro", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private List<Comentario> commentsList = new ArrayList<>();
 
     public Libro() {
     }
@@ -78,50 +76,33 @@ public class Libro {
         this.paginas = paginas;
     }
 
-    public List<Persona> getWritersList() {
-        return writersList;
-    }
-
-    public void setWritersList(List<Persona> writersList) {
-        this.writersList = writersList;
-    }
-
-    public List<Persona> getReadersList() {
-        return readersList;
-    }
-
-    public void setReadersList(List<Persona> readersList) {
-        this.readersList = readersList;
-    }
-
-
     @Override
     public String toString() {
         return "Libro -> " + "id=" + id + ", title=" + title + ", paginas=" + paginas;
     }
 
-//    public List<Comentario> getCommentsList() {
-//        return commentsList;
-//    }
-//
-//    public void setCommentsList(List<Comentario> commentsList) {
-//        this.commentsList = commentsList;
-//    }
-
-//    public Comentario getComentario() {
-//        return comentario;
-//    }
-//
-//    public void setComentario(Comentario comentario) {
-//        this.comentario = comentario;
-//    }
-
-    public List<Persona> getCommentsList() {
+    public List<Comentario> getCommentsList() {
         return commentsList;
     }
 
-    public void setCommentsList(List<Persona> commentsList) {
+    public void setCommentsList(List<Comentario> commentsList) {
         this.commentsList = commentsList;
+    }
+
+    public List<Escribir> getWritersList() {
+        return writersList;
+    }
+
+    public void setWritersList(List<Escribir> writersList) {
+        this.writersList = writersList;
+    }
+
+    public List<Leer> getReadersList() {
+        return readersList;
+    }
+
+    public void setReadersList(List<Leer> readersList) {
+        this.readersList = readersList;
     }
 
 }

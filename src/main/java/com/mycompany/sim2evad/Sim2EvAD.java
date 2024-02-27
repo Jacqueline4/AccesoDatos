@@ -4,7 +4,9 @@
 package com.mycompany.sim2evad;
 
 import com.mycompany.sim2evad.imp.LibroDAOimp;
+import com.mycompany.sim2evad.imp.PersonaDAOimp;
 import com.mycompany.sim2evad.model.Comentario;
+import com.mycompany.sim2evad.model.Leer;
 import com.mycompany.sim2evad.model.Libro;
 import com.mycompany.sim2evad.model.Persona;
 import com.mycompany.sim2evad.services.PersonaServices;
@@ -19,6 +21,7 @@ public class Sim2EvAD {
     public static void main(String[] args) {
         PersonaServices ps = new PersonaServices();
         LibroDAOimp ldao = new LibroDAOimp();
+        PersonaDAOimp pdao = new PersonaDAOimp();
 
         Persona p1 = new Persona("Pepe", "pep", "p@gmail", "123");
         Persona p2 = new Persona("Juan", "j", "j@gmail", "123");
@@ -34,38 +37,34 @@ public class Sim2EvAD {
         ldao.createLibro(l1);
         ldao.createLibro(l2);
         ldao.createLibro(l3);
-        
+
+        ps.addLibroEscrito(p3, l2);
+        ps.addLibroEscrito(p3, l3);
+        Comentario c1 = new Comentario(2, "comentario1");
+        Comentario c2 = new Comentario(5, "comentario2");
+        ps.addLibroComentado(p1, l1, c1);
+        ps.addLibroComentado(p1, l3, c2);
+
         ps.addLibroLeido(p1, l1);
         ps.addLibroLeido(p1, l2);
         ps.addLibroLeido(p1, l3);
         ps.addLibroLeido(p2, l1);
         ps.addLibroLeido(p2, l2);
-        ps.addLibroLeido(p2, l3);
+//        ps.addLibroLeido(p2, l3);
         ps.addLibroLeido(p3, l1);
         ps.addLibroLeido(p3, l2);
         ps.addLibroLeido(p3, l3);
 
-//        ldao.createLibro(l3);
-//
-//        ps.addLibroEscrito(p3, l1);
-//        ps.addLibroEscrito(p3, l2);
-//
-//        ps.addLibroLeido(p2, l1);
-//
-//        ps.addLibroComentado(p2, l1);
-////        ps.addLibroComentado(p2, l1, new Comentario(1, "comentario1"));
-////        Comentario c = new Comentario(1, "comentario1");
-////        l1.setComentario(c);
-////        ps.addLibroComentado(p4, l3, c);
-////        ps.addLibroComentado(p2, l3, new Comentario(2, "comentario2"));
-//        ps.addLibroLeido(p1, l1);
-        if (ps.login(p1)) {
+        ps.remove(p3);
+//        
+        if (ps.login(p2)) {
+            Leer l= new Leer(p2);
             System.out.println("Bienvenido");
             System.out.println("Libros leidos: ");
-
-            for (Libro libro : p1.getReadList()) {
-                System.out.println(libro);
+            for (Libro libro : pdao.getLibrosLeidosByPersona(p2, l)) {
+                System.out.println("--------libros leidos: "+ libro);
             }
+
             System.out.println("listado de libros: ");
             for (Libro libro : ldao.getLibros()) {
                 System.out.println(libro);

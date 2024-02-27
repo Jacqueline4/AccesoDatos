@@ -4,12 +4,13 @@
  */
 package com.mycompany.sim2evad.services;
 
+import com.mycompany.sim2evad.imp.LibroDAOimp;
 import com.mycompany.sim2evad.imp.PersonaDAOimp;
 import com.mycompany.sim2evad.model.Comentario;
+import com.mycompany.sim2evad.model.Escribir;
+import com.mycompany.sim2evad.model.Leer;
 import com.mycompany.sim2evad.model.Libro;
 import com.mycompany.sim2evad.model.Persona;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  *
@@ -18,9 +19,10 @@ import java.util.List;
 public class PersonaServices {
 
     PersonaDAOimp pdao = new PersonaDAOimp();
+    LibroDAOimp ldao = new LibroDAOimp();
 
     public boolean login(Persona p) {
-        Persona dbPesona = pdao.getByUser(p);
+        Persona dbPesona = pdao.getByPersona(p);
         if (dbPesona != null) {
             if (p.getUser().equals(dbPesona.getUser()) && p.getPassword().equals(dbPesona.getPassword())) {
                 return true;
@@ -29,51 +31,45 @@ public class PersonaServices {
         return false;
     }
 
-//    public void addLibroLeido(Persona p, Libro l) {
-//        p.getReadList().add(l);
-//        l.getReadersList().add(p);
-//        pdao.update(p);
-//    }
     public void addLibroLeido(Persona p, Libro l) {
-        List<Libro> dbll = pdao.getLibrosLeidos(p);
-        if (!dbll.contains(l)) {
-            p.getReadList().add(l);
-        }
-        if (!l.getReadersList().contains(p)) {
-            l.getReadersList().add(p);
-        }
-        pdao.update(p);
+        Persona pdb = pdao.getByPersona(p);
+        Libro ldb = ldao.getByLibro(l);
+        pdb.getReadList().add(new Leer(ldb, pdb));
+
+        pdao.update(pdb);
     }
 
     public void addLibroEscrito(Persona p, Libro l) {
-        p.getWriteList().add(l);
-        l.getWritersList().add(p);
-        pdao.update(p);
-    }
-     public void addLibroComentado(Persona p, Libro l) {
-       
-        p.getCommentList().add(l);
-        l.getCommentsList().add(p);
-      
-        pdao.update(p);
+        Persona pdb = pdao.getByPersona(p);
+        Libro ldb = ldao.getByLibro(l);
+        pdb.getWriteList().add(new Escribir(ldb, pdb));
+        pdao.update(pdb);
     }
 
-//    public void addLibroComentado(Persona p, Libro l, Comentario c) {
-//        c.setUsuario(p);
-//        c.setLibro(l);
-//        p.getCommentList().add(c);
-//        l.getCommentsList().add(c);
-//      
-//        pdao.update(p);
-//    }
+    public void addLibroComentado(Persona p, Libro l, Comentario c) {
+
+        Persona pdb = pdao.getByPersona(p);
+        Libro ldb = ldao.getByLibro(l);
+        c.setLibro(ldb);
+        c.setPersona(pdb);
+        pdb.getCommentList().add(c);
+        ldb.getCommentsList().add(c);
+
+        pdao.update(pdb);
+    }
 
     public void remove(Persona p) {
-        pdao.remove(p);
+        Persona pdb = pdao.getByPersona(p);
+        pdao.remove(pdb);
     }
 
     public void create(Persona p) {
-
+        
         pdao.create(p);
     }
 
+    public void update(Persona p) {
+        Persona pdb = pdao.getByPersona(p);
+        pdao.update(pdb);
+    }
 }
